@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState,useRef } from "react";
 
 const uuid = (prefix) => {
   try {
@@ -15,13 +15,14 @@ const uuid = (prefix) => {
 
 
 const useWEForm = (initialState = {},onSubmit = null) => {
-  const [formData,setFormData] = useState();
+  const [formData,setFormData] = useState(initialState);
   const [errors,setErrors] = useState([]);
-  const inputs = useRef([]);
+  const inputs = useRef({});
 
 
   const handleInputChange = (e,inputName) => {
-
+    let inputObj = inputs.current[inputName];    
+    setFormData({...formData,[inputName]:e.target.value})    
   }
 
   const handleInputReset = (e,inputName) => {
@@ -38,14 +39,28 @@ const useWEForm = (initialState = {},onSubmit = null) => {
 
 
 
+  const registerInput = (name,input,options) => {
+    try {      
+      let inputsCopy = {...inputs.current};
+      if (inputsCopy.hasOwnProperty(name)) return;
+      inputsCopy[name] = {name,input,options};
+      console.log(inputsCopy);
+      inputs.current = {...inputsCopy};
+    } catch (error) {
+      console.error(`[FN]registerInput()[ERROR]-${error.message}`);
+      console.error(error.stack);
+    }
+  }
+
   const registerFormInput = (name,options = {}) => {
+    // debugger;
     let inputName = name;
     const retObj = {
       id: uuid(),
       value: formData[inputName],
-      "data-error": "false",
+      "data-error": "false",      
       ref: (ele) => registerInput(inputName,ele,options),
-      onchange: () => {},
+      onChange: (e) => handleInputChange(e,inputName),
       onReset: () => {},
       onBlur: () => {}
     }
