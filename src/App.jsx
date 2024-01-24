@@ -13,7 +13,8 @@ function App() {
 
         <form className={styles.form}>
 
-          <input type='text' {...registerFormInput("name")} />
+          <input className={styles.textfield} type='text' {...registerFormInput("name")} placeholder='Enter name'/>
+          <input className={styles.textfield} type='text' {...registerFormInput("City")} placeholder='Enter city'/>
 
         </form>
 

@@ -1,0 +1,32 @@
+.container {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100vw;
+  height: 100vh;
+  background-color: cornflowerblue;
+}
+
+.form_container {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 400px;
+  height: 200px;
+  background-color: aliceblue;
+  padding: 0 1rem;
+}
+
+.textfield {
+  background-color: transparent;
+  font-size: 2rem;
+  color: black;
+}
+
+.form {
+  display: flex;
+  flex-flow: column;
+  gap: .5rem;
+}
