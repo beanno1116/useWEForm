@@ -2,7 +2,7 @@ import styles from './app.module.css'
 import useWEForm from './useWEForm/useWEForm'
 
 function App() {
-  const {formData,registerFormInput} = useWEForm({
+  const {registerFormInput} = useWEForm({
     name: ""
   })
 

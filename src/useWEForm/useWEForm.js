@@ -1,80 +1,39 @@
 import { useState,useRef } from "react";
+import { isObject, isUndefined, uuid } from "./utilities";
+import { formFields } from "./models/Field";
+import createFormController from "./controllers/formController";
 
-const uuid = (prefix) => {
-  try {
-    var text = prefix || "";
-    var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-";  
-    for (var i = 0; i < 64; i++) {
-      text += possible.charAt(Math.floor(Math.random() * possible.length));
-    }  
-    return text;
-  } catch (error) {
-    console.error(`[FNC][UUID][ERROR] - ${error.message}`);
-  }        
+
+const Fields = new formFields();
+
+const _options = {
+  required: false,
+  min: 0,
+  max: 100,
+  minLength: 0,
+  maxLength: 100,
+  pattern: ""
 }
+
 
 
 const useWEForm = (initialState = {},onSubmit = null) => {
-  const [formData,setFormData] = useState(initialState);
-  const [errors,setErrors] = useState([]);
-  const inputs = useRef({});
+  const _controller = useRef(undefined);
 
-
-  const handleInputChange = (e,inputName) => {
-    let inputObj = inputs.current[inputName];    
-    setFormData({...formData,[inputName]:e.target.value})    
-  }
-
-  const handleInputReset = (e,inputName) => {
-
-  }
-
-  const handleFormReset = (e) => {
-
-  }
-
-  const handleFormSubmit = (e,handler,args={}) => {
-
+  if (!_controller.current){
+  _controller.current = createFormController();  
   }
 
 
-
-  const registerInput = (name,input,options) => {
-    try {      
-      let inputsCopy = {...inputs.current};
-      if (inputsCopy.hasOwnProperty(name)) return;
-      inputsCopy[name] = {name,input,options};
-      console.log(inputsCopy);
-      inputs.current = {...inputsCopy};
-    } catch (error) {
-      console.error(`[FN]registerInput()[ERROR]-${error.message}`);
-      console.error(error.stack);
-    }
-  }
-
-  const registerFormInput = (name,options = {}) => {
-    // debugger;
-    let inputName = name;
-    const retObj = {
-      id: uuid(),
-      value: formData[inputName],
-      "data-error": "false",      
-      ref: (ele) => registerInput(inputName,ele,options),
-      onChange: (e) => handleInputChange(e,inputName),
-      onReset: () => {},
-      onBlur: () => {}
-    }
-    return retObj;
-  }
-
-  return {
-    formData,
-    errors,
-    registerFormInput,
-    handleFormReset,
-    handleFormSubmit
-  }
-
+  return _controller.current;
 }
+
+  
+
+
+
+
+
+  
 
 export default useWEForm;
